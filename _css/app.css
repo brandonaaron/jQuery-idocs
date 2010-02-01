@@ -1,0 +1,59 @@
+@import "jqtouch.css";
+@import "../_themes/jqt/theme.css";
+
+/* hide fullscreen info when fullscreen */
+#jqt.fullscreen #home .info { display: none; }
+
+
+/* special styles for an entry to include a description */
+#jqt li.entry a { font-size: 14px; color: #ccc; font-weight: normal; }
+    #jqt li.entry a span.name { font-size: 18px; color: #fff; font-weight: bold; }
+
+
+/* content heavy styles */
+#jqt .info.rounded {
+    margin: 15px 10px 17px 10px;
+    -webkit-border-radius: 8px;
+    text-align: left;
+    background: #ddd;
+    font-size: 13px;
+    line-height: 1.4em;
+    text-shadow: none;
+    color: #333;
+    padding: 15px;
+    border-top: none;
+    font-weight: normal;
+}
+    #jqt .info.rounded h2 { margin: 0 0 10px; }
+    #jqt .info.rounded p { margin: 0 0 10px; padding: 0; }
+    #jqt .info.rounded pre { margin: 0 0 10px; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; }
+    #jqt .info.rounded ul, 
+    #jqt .info.rounded ol { margin: 10px; padding: 0; background: none; color: #333; font-size: 13px; font-weight: normal; border: 0; }
+    #jqt .info.rounded ul li,
+    #jqt .info.rounded ol li { padding: 0 0 5px 0; background: none; color: #333; font-size: 13px; font-weight: normal; border: 0; }
+    
+    dl.signature { margin-bottom: 17px; }
+        dl.signature dt { font-weight: bold; font-size: 14px; border-bottom: 1px solid #333; }
+
+
+/* styles necessary for Scrollable */
+.toolbar { z-index: 2; }
+.scrollable { height: 372px; position: relative; padding-top: 1px; z-index: 1; -webkit-transform-style: preserve-3d; -webkit-transform: translate3d(0, 0, 0); -webkit-transition-property: -webkit-transform; -webkit-transition-timing-function: cubic-bezier(0,0,0,1); }
+#jqt.landscape .scrollable { height: 227px; }
+#jqt.fullscreen.black-translucent .scrollable { height: 432px; }
+#jqt.fullscreen.landscape .scrollable { height: 258px; }
+
+/* force correct height for .page divs */
+body #jqt .page {
+    min-height: 420px !important;
+    overflow: hidden;
+}
+body #jqt.fullscreen .page {
+    min-height: 460px !important;
+}
+body #jqt.fullscreen.black-translucent .page {
+    min-height: 480px !important;
+}
+body #jqt.landscape .page {
+    min-height: 320px !important;
+}

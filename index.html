@@ -1,0 +1,134 @@
+<!doctype html>
+<html manifest="cache.manifest">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <title>jQuery API</title>
+        <link rel="stylesheet" href="_css/app.css" type="text/css" media="screen" charset="utf-8">
+        <script src="_js/scrollable.js" type="text/javascript" charset="utf-8"></script>
+        <script src="_js/jquery.js" type="text/javascript" charset="utf-8"></script>
+        <script src="_js/jqtouch.js" type="text/javascript" charset="utf-8"></script>
+        <script src="_js/jqtouch.offline.js" type="text/javascript" charset="utf-8"></script>
+        <script src="_js/jquery.template.js" type="text/javascript" charset="utf-8"></script>
+        <script src="_js/apidocs.js" type="text/javascript" charset="utf-8"></script>
+        <script src="_js/app.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="jqt">
+            <div class="page">
+                <div class="toolbar">
+                    <h1>jQuery API</h1>
+                </div>
+                <div class="info">
+                    Loading... This could take a while. The XML is quite large but is being saved locally for offline use.
+                </div>
+            </div>
+            <div class="page" id="home">
+                <div class="toolbar">
+                    <h1>jQuery API</h1>
+                    <a class="button slideup" href="#about">About</a>
+                </div>
+                <div class="scrollable">
+                    <ul class="rounded">
+                        <li class="arrow"><a href="#" class="category" data-name="">Categories</a></li>
+                        <li class="arrow"><a href="#" class="category" data-name="Selectors">Selectors</a></li>
+                        <li class="arrow"><a href="#" class="category" data-name="Version">Versions</a></li>
+                    </ul>
+                    <div class="info">Add to your home screen for fullscreen action!</div>
+                </div>
+            </div>
+            <div class="page" id="about">
+                <div class="toolbar">
+                    <h1>About</h1>
+                    <a class="back" href="#">Back</a>
+                </div>
+                <div class="scrollable">
+                    <div class="info rounded">
+                        <p>This API browser is built by <a href="http://brandonaaron.net/" target="_blank">Brandon Aaron</a> with the help of <a href="http://jquery.com" target="_blank">jQuery</a>, <a href="http://jqtouch.com/" target="_blank">jQTouch</a>, <a href="http://github.com/furf/jquery-template/">jQuery.template</a>, and <a href="http://github.com/brandonaaron/scrollable">Scrollable</a>.</p>
+                        <p>The documentation is pulled from the <a href="http://api.jquery.com/">jQuery API</a> XML dump and parsed locally using XPATH.</p>
+                        <p>Once all the assets and docs are loaded, the application can be run even when offline.</p>
+                        <p>The code for this project is hosted on GitHub... <a href="http://github.com/brandonaaron/jQuery-idocs">happy forking</a>! :)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="page" id="error">
+                <div class="toolbar">
+                    <h1>jQuery API Docs</h1>
+                    <a class="back" href="#">Back</a>
+                </div>
+                <div class="scrollable">
+                    <div class="info">Looks like an error occurred. :(</div>
+                </div>
+            </div>
+        </div>
+        <script id="tpl-categories" type="text/html" charset="utf-8">
+            <div id="<%= this.id %>" class="page generated">
+                <div class="toolbar">
+                    <h1><%= this.title %></h1>
+                    <a class="back" href="#">Back</a>
+                    <!--<a class="button slide" href="#home">Home</a>-->
+                </div>
+                <div class="scrollable">
+                    <ul class="rounded">
+                        <% $.each(this.categories, function (i, category) { %>
+                        <li class="arrow"><a href="#" class="category" data-name="<%= category.name %>"><%= category.name %></a></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
+        </script>
+        <script id="tpl-entries" type="text/html" charset="utf-8">
+            <div id="<%= this.id %>" class="page generated">
+                <div class="toolbar">
+                    <h1><%= this.title %></h1>
+                    <a class="back" href="#">Back</a>
+                    <!--<a class="button slide" href="#home">Home</a>-->
+                </div>
+                <div class="scrollable">
+                    <ul class="rounded">
+                        <% $.each(this.entries, function (i, entry) { %>
+                        <li class="arrow entry"><a href="#" class="entry <%= entry.type %>" data-name="<%= entry.name %>" data-index="<%= entry.index %>"><span class="name"><%= entry.displayName %></span><br><%= entry.desc %></a></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
+        </script>
+        <script id="tpl-entry" type="text/html" charset="utf-8">
+            <div id="<%= this.id %>" class="page generated">
+                <div class="toolbar">
+                    <h1><%= this.title %></h1>
+                    <a class="back" href="#">Back</a>
+                    <!--<a class="button slide" href="#home">Home</a>-->
+                </div>
+                <div class="scrollable">
+                    <div class="info rounded">
+                        <h2><%= this.displayName %></h2>
+                        <p class="desc"><%= this.desc %></p>
+                        <% if (this.returns) { %>
+                            <p class="returns"><strong>Returns</strong>: <%= this.returns %></p>
+                        <% } %>
+                    </div>
+                    <% if (this.signatures.length > 0) { %>
+                        <div class="info rounded">
+                        <% $.each(this.signatures, function(i, signature) { %>
+                            <dl class="signature">
+                                <dt><%= signature.title %></dt>
+                                <!--<dd class="added"><%= signature.added %></dd>-->
+                                <% $.each(signature.arguments, function(i, argument) { %>
+                                    <dd class="argument"><strong><%= argument.name %></strong>: <%= argument.desc %></dd>
+                                <% }); %>
+                            </dl>
+                        <% }); %>
+                        </div>
+                    <% } %>
+                    <% if ($.trim(this.longdesc)) { %>
+                        <div class="info rounded">
+                            <%= this.longdesc %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </script>
+    </body>
+</html>
