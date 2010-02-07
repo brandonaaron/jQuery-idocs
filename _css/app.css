@@ -4,6 +4,8 @@
 /* hide fullscreen info and loading info when fullscreen */
 #jqt.fullscreen #home .fullscreen { display: none; }
 #jqt.fullscreen .loading { display: none; }
+#jqt #home .updateready { display: none; }
+#jqt.updateready #home .updateready { display: block; }
 
 
 /* special styles for an entry to include a description */

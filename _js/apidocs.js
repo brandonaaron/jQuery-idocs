@@ -44,6 +44,20 @@ APIDocs.prototype = {
             },
         });
     },
+    
+    search: function(str) {
+        // make the search string lowercase, remove a starting period and parens
+        str = str.toLowerCase().replace(/^\./, '').replace('()', '');
+        var toLowerName = 'translate(@name, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
+            toLowerSample = 'translate(sample, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")',
+            entries = this.select('/api/entries/entry[(contains('+toLowerName+', "'+str+'")) or (contains('+toLowerSample+', "'+str+'"))]'),
+            id = 'search',
+            name = '"'+str+'"',
+            html = this._generateEntries(entries, name, id);
+        $('#search').remove();
+        $(html).appendTo('#jqt').find('.scrollable').scrollable();
+        jqtouch.goTo('#search', 'slide');
+    },
 
     showCategory: function(name) {
         var id = name && 'category'+this._sanitizeName(name) || 'categories',
@@ -81,13 +95,12 @@ APIDocs.prototype = {
             this._sortByName(data.categories);
             return this.templates.categories(data, true);
         } else {
-            return this._generateEntriesByCategory(name, id);
+            return this._generateEntries(this.select('/api/entries/entry/category[@name="'+name+'"]/..'), name, id);
         }
     },
-
-    _generateEntriesByCategory: function(name, id) {
-        var entries = this.select('/api/entries/entry/category[@name="'+name+'"]/..'),
-            data = {
+    
+    _generateEntries: function(entries, name, id) {
+        var data = {
                 id: id,
                 title: name,
                 entries: []

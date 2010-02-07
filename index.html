@@ -35,7 +35,13 @@
                         <li class="arrow"><a href="#" class="category" data-name="Selectors">Selectors</a></li>
                         <li class="arrow"><a href="#" class="category" data-name="Version">Versions</a></li>
                     </ul>
+                    <form>
+                        <ul class="edit rounded">
+                            <li><input type="text" name="search" placeholder="Search: eq or :eq"></li>
+                        </ul>
+                    </form>
                     <div class="info fullscreen">Add to your home screen for fullscreen action!</div>
+                    <div class="info updateready">Update ready to be installed! Tap here to restart!</div>
                 </div>
             </div>
             <div class="page" id="about">
@@ -86,11 +92,15 @@
                     <a class="button home" href="#">Home</a>
                 </div>
                 <div class="scrollable">
-                    <ul class="rounded">
-                        <% $.each(this.entries, function (i, entry) { %>
-                        <li class="arrow entry"><a href="#" class="entry <%= entry.type %>" data-name="<%= entry.name %>" data-index="<%= entry.index %>"><span class="name"><%= entry.displayName %></span><br><%= entry.desc %></a></li>
-                        <% }); %>
-                    </ul>
+                    <% if (this.entries.length) { %>
+                        <ul class="rounded">
+                            <% $.each(this.entries, function (i, entry) { %>
+                            <li class="arrow entry"><a href="#" class="entry <%= entry.type %>" data-name="<%= entry.name %>" data-index="<%= entry.index %>"><span class="name"><%= entry.displayName %></span><br><%= entry.desc %></a></li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <div class="info">No entries found.</div>
+                    <% } %>
                 </div>
             </div>
         </script>

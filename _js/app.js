@@ -23,7 +23,23 @@ $(function(){
         return;
     }
     
+    window.applicationCache.addEventListener('updateready', function() {
+        $('#jqt').addClass('updateready');
+        $('#home').find('.updateready').bind('click tap', function() {
+            window.location.reload();
+        });
+    }, false);
     jqtouch.checkForUpdates();
+    
+    $('#home').find('form').bind('submit', function(event) {
+        var $input = $('input', this),
+            val = $('input', this).val();
+        if (val) {
+            apiDocs.search(val);
+        }
+        $input.val('');
+        return false;
+    });
     
     $('a').live('tap click', function(event) {
         var $this = $(this);
