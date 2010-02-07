@@ -1,8 +1,9 @@
 @import "jqtouch.css";
 @import "../_themes/jqt/theme.css";
 
-/* hide fullscreen info when fullscreen */
-#jqt.fullscreen #home .info { display: none; }
+/* hide fullscreen info and loading info when fullscreen */
+#jqt.fullscreen #home .fullscreen { display: none; }
+#jqt.fullscreen .loading { display: none; }
 
 
 /* special styles for an entry to include a description */
