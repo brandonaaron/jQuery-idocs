@@ -33,7 +33,10 @@
     #jqt .info.rounded ol li { padding: 0 0 5px 0; background: none; color: #333; font-size: 13px; font-weight: normal; border: 0; }
     
     dl.signature { margin-bottom: 17px; }
-        dl.signature dt { font-weight: bold; font-size: 14px; border-bottom: 1px solid #333; }
+        dl.signature dt { margin-bottom: 5px; border-bottom: 1px solid #333; padding-bottom: 5px; font-weight: bold; font-size: 14px; }
+            dl.signature dt span.arg { color: #666; }
+        dl.signature dd.added { float: right; margin-top: -1.5em; padding: 0 5px; font-size: 11px; font-weight: bold; color: #666; background: #ddd; }
+        dl.signature dd { margin-bottom: 5px; }
 
 
 /* styles necessary for Scrollable */

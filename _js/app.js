@@ -23,8 +23,6 @@ $(function(){
         return;
     }
     
-    // jqtouch.autoCheckForUpdates();
-    
     $('a').live('tap click', function(event) {
         var $this = $(this);
         if ($this.is('.entry')) {
@@ -36,6 +34,10 @@ $(function(){
         if ($this.is('.category')) {
             var name = $this.attr('data-name');
             apiDocs.showCategory(name);
+            return false;
+        }
+        if ($this.is('.home')) {
+            jqtouch.goBack('#home');
             return false;
         }
     });

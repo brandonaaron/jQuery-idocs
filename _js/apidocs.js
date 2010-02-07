@@ -145,9 +145,11 @@ APIDocs.prototype = {
                         optional: optional,
                         desc: this._nodeValue(argument, 'desc', true)
                     });
+                    sig.title += '<span class="arg">';
                     if (optional) sig.title += '[';
                     sig.title += sigName;
                     if (optional) sig.title += ']';
+                    sig.title += '</span>';
                     sig.title += ', ';
                 }, this);
                 sig.title = sig.title.replace(/, $/, '') + ')';

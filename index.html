@@ -9,7 +9,6 @@
         <script src="_js/scrollable.js" type="text/javascript" charset="utf-8"></script>
         <script src="_js/jquery.js" type="text/javascript" charset="utf-8"></script>
         <script src="_js/jqtouch.js" type="text/javascript" charset="utf-8"></script>
-        <script src="_js/jqtouch.offline.js" type="text/javascript" charset="utf-8"></script>
         <script src="_js/jquery.template.js" type="text/javascript" charset="utf-8"></script>
         <script src="_js/apidocs.js" type="text/javascript" charset="utf-8"></script>
         <script src="_js/app.js" type="text/javascript" charset="utf-8"></script>
@@ -67,7 +66,7 @@
                 <div class="toolbar">
                     <h1><%= this.title %></h1>
                     <a class="back" href="#">Back</a>
-                    <!--<a class="button slide" href="#home">Home</a>-->
+                    <a class="button home" href="#">Home</a>
                 </div>
                 <div class="scrollable">
                     <ul class="rounded">
@@ -83,7 +82,7 @@
                 <div class="toolbar">
                     <h1><%= this.title %></h1>
                     <a class="back" href="#">Back</a>
-                    <!--<a class="button slide" href="#home">Home</a>-->
+                    <a class="button home" href="#">Home</a>
                 </div>
                 <div class="scrollable">
                     <ul class="rounded">
@@ -99,7 +98,7 @@
                 <div class="toolbar">
                     <h1><%= this.title %></h1>
                     <a class="back" href="#">Back</a>
-                    <!--<a class="button slide" href="#home">Home</a>-->
+                    <a class="button home" href="#">Home</a>
                 </div>
                 <div class="scrollable">
                     <div class="info rounded">
@@ -114,7 +113,10 @@
                         <% $.each(this.signatures, function(i, signature) { %>
                             <dl class="signature">
                                 <dt><%= signature.title %></dt>
-                                <!--<dd class="added"><%= signature.added %></dd>-->
+                                <dd class="added">v<%= signature.added %></dd>
+                                <% if (!signature.arguments.length) { %>
+                                    <dd>No arguments</dd>
+                                <% } %>
                                 <% $.each(signature.arguments, function(i, argument) { %>
                                     <dd class="argument"><strong><%= argument.name %></strong>: <%= argument.desc %></dd>
                                 <% }); %>
