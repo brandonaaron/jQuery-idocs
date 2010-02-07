@@ -23,6 +23,8 @@ $(function(){
         return;
     }
     
+    jqtouch.checkForUpdates();
+    
     $('a').live('tap click', function(event) {
         var $this = $(this);
         if ($this.is('.entry')) {

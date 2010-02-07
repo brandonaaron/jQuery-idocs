@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Rev 5
+# Rev 6
 
 index.html
 icon.png
@@ -9,6 +9,7 @@ _js/scrollable.js
 _js/jquery.js
 _js/jquery.template.js
 _js/jqtouch.js
+_js/jqtouch.offline.js
 _js/apidocs.js
 _js/app.js
 _css/app.css
