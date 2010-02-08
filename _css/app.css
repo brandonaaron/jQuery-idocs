@@ -2,11 +2,12 @@
 @import "../_themes/jqt/theme.css";
 
 /* hide fullscreen info and loading info when fullscreen */
-#jqt.fullscreen #home .fullscreen { display: none; }
-#jqt.fullscreen .loading { display: none; }
-#jqt #home .updateready { display: none; }
+#jqt.fullscreen #home .fullscreen,
+#jqt.fullscreen .loading,
+#jqt #home .updateready,
+#jqt #home .downloadingupdate { display: none; }
 #jqt.updateready #home .updateready { display: block; }
-
+#jqt.downloadingupdate #home .downloadingupdate { display: block; }
 
 /* special styles for an entry to include a description */
 #jqt li.entry a { font-size: 14px; color: #ccc; font-weight: normal; }

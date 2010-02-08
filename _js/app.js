@@ -23,8 +23,11 @@ $(function(){
         return;
     }
     
+    window.applicationCache.addEventListener('downloading', function() {
+        $('#jqt').addClass('downloadingupdate');
+    }, false);
     window.applicationCache.addEventListener('updateready', function() {
-        $('#jqt').addClass('updateready');
+        $('#jqt').removeClass('downloadingupdate').addClass('updateready');
         $('#home').find('.updateready').bind('click tap', function() {
             window.location.reload();
         });
