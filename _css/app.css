@@ -26,6 +26,7 @@
     padding: 15px;
     border-top: none;
     font-weight: normal;
+    word-wrap: break-word;
 }
     #jqt .info.rounded h2 { margin: 0 0 10px; }
     #jqt .info.rounded p { margin: 0 0 10px; padding: 0; }
