@@ -233,6 +233,8 @@
         function addPageToHistory(page, animation, reverse) {
             // Grab some info
             var pageId = page.attr('id');
+            // MODIFIED: Trigger event
+            $body.trigger('addPageToHistory', pageId);
             // Prepend info to page history
             hist.unshift({
                 page: page,

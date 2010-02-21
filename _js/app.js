@@ -23,6 +23,7 @@ $(function(){
         return;
     }
     
+    // look for updates and notify the user
     window.applicationCache.addEventListener('downloading', function() {
         $('#jqt').addClass('downloadingupdate');
     }, false);
@@ -34,6 +35,7 @@ $(function(){
     }, false);
     jqtouch.checkForUpdates();
     
+    // hook up the search form
     $('#home').find('form').bind('submit', function(event) {
         var $input = $('input', this),
             val = $('input', this).val();
@@ -44,6 +46,7 @@ $(function(){
         return false;
     });
     
+    // handle the main navigation between categories and entries
     $('a').live('tap click', function(event) {
         var $this = $(this);
         if ($this.is('.entry')) {
@@ -63,8 +66,18 @@ $(function(){
         }
     });
     
+    // make the initial pages scrollable
     $('#jqt').find('.scrollable').scrollable();
     
+    // track events
+    $(document.body).bind('addPageToHistory', function(event, id) {
+        var page = $('#'+id),
+            title = page.find('h1').text(),
+            action = id === 'search' ? 'search' : 'show';
+        _gaq.push(['_trackEvent', 'browse', action, title]);
+    });
+    
+    // get the docs
     window.apiDocs = new APIDocs();
     apiDocs.getXML({
         success: function() {
