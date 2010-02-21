@@ -80,9 +80,186 @@
             <category name="Version 1.2.6"/>
             <category name="Version 1.3"/>
             <category name="Version 1.4"/>
+            <category name="Version 1.4.1"/>
+            <category name="Version 1.4.2"/>
         </category>
     </categories>
     <entries>
+        <entry type="method" name="undelegate" return="jQuery">
+            <desc><![CDATA[Remove a handler from the event for all elements which match the current selector, now or in the future, based upon a specific set of root elements.]]></desc>
+            <signature>
+                <added>1.4.2</added>
+            </signature>
+            <signature>
+                <added>1.4.2</added>
+                <argument name="selector" type="String">
+                    <desc><![CDATA[A selector which will be used to filter the event results.]]></desc>
+                </argument>
+                <argument name="eventType" type="String">
+                    <desc><![CDATA[A string containing a JavaScript event type, such as "click" or "keydown"]]></desc>
+                </argument>
+            </signature>
+            <signature>
+                <added>1.4.2</added>
+                <argument name="selector" type="String">
+                    <desc><![CDATA[A selector which will be used to filter the event results.]]></desc>
+                </argument>
+                <argument name="eventType" type="String">
+                    <desc><![CDATA[A string containing a JavaScript event type, such as "click" or "keydown"]]></desc>
+                </argument>
+                <argument name="handler" type="Function">
+                    <desc><![CDATA[A function to execute at the time the event is triggered.]]></desc>
+                </argument>
+            </signature>
+            <longdesc><![CDATA[
+                <p>Undelegate is a way of removing event handlers that have been bound using <a href="/delegate">.delegate()</a>. It works virtually identically to <a href="/die">.die()</a> with the addition of a selector filter argument (which is required for delegation to work).</p>
+            ]]></longdesc>
+            <example>
+                <desc><![CDATA[Can bind and unbind events to the colored button.]]></desc>
+                <code><![CDATA[
+function aClick() {
+  $("div").show().fadeOut("slow");
+}
+$("#bind").click(function () {
+  $("body").delegate("#theone", "click", aClick)
+    .find("#theone").text("Can Click!");
+});
+$("#unbind").click(function () {
+  $("body").undelegate("#theone", "click", aClick)
+    .find("#theone").text("Does nothing...");
+});
+]]></code>
+                <css><![CDATA[
+button { margin:5px; }
+button#theone { color:red; background:yellow; }
+]]></css>
+                <html><![CDATA[<button id="theone">Does nothing...</button>
+<button id="bind">Bind Click</button>
+<button id="unbind">Unbind Click</button>
+<div style="display:none;">Click!</div>]]></html>
+            </example>
+            <example>
+                <desc><![CDATA[To unbind all delegated events from all paragraphs, write:]]></desc>
+                <code><![CDATA[$("p").undelegate()]]></code>
+            </example>
+            <example>
+                <desc><![CDATA[To unbind all delegated click events from all paragraphs, write:]]></desc>
+                <code><![CDATA[$("p").undelegate( "click" )]]></code>
+            </example>
+            <example>
+                <desc><![CDATA[To undelegate just one previously bound handler, pass the function in as the third argument:]]></desc>
+                <code><![CDATA[var foo = function () {
+// code to handle some kind of event
+};
+
+$("body").delegate("p", "click", foo); // ... now foo will be called when paragraphs are clicked ...
+
+$("body").undelegate("p", "click", foo); // ... foo will no longer be called.]]></code>
+            </example>
+            <category name="Event Handler Attachment"/>
+            <category name="Version 1.4.2"/>
+        </entry>
+        <entry type="method" name="delegate" return="jQuery">
+            <desc><![CDATA[Attach a handler to the event for all elements which match the current selector, now or in the future, based upon a specific set of root elements.]]></desc>
+            <signature>
+                <added>1.4.2</added>
+                <argument name="selector" type="String">
+                    <desc><![CDATA[A selector to filter the elements that trigger the event.]]></desc>
+                </argument>
+                <argument name="eventType" type="String">
+                    <desc><![CDATA[A string containing one or more space-separated JavaScript event types, such as "click" or "keydown," or custom event names.]]></desc>
+                </argument>
+                <argument name="handler" type="Function">
+                    <desc><![CDATA[A function to execute at the time the event is triggered.]]></desc>
+                </argument>
+            </signature>
+            <signature>
+                <added>1.4.2</added>
+                <argument name="selector" type="String">
+                    <desc><![CDATA[A selector to filter the elements that trigger the event.]]></desc>
+                </argument>
+                <argument name="eventType" type="String">
+                    <desc><![CDATA[A string containing one or more space-separated JavaScript event types, such as "click" or "keydown," or custom event names.]]></desc>
+                </argument>
+                <argument name="eventData" type="Object">
+                    <desc><![CDATA[A map of data that will be passed to the event handler.]]></desc>
+                </argument>
+                <argument name="handler" type="Function">
+                    <desc><![CDATA[A function to execute at the time the event is triggered.]]></desc>
+                </argument>
+            </signature>
+            <longdesc><![CDATA[
+                <p>Delegate is an alternative to using the <a href="/live">.live()</a> method, allowing for each binding of event delegation to specific DOM elements. For example the following delegate code:</p>
+                <pre>$("table").delegate("td", "hover", function(){
+	$(this).toggleClass("hover");
+});</pre>
+                <p>Is equivalent to the following code written using <code>.live()</code>:</p>
+                <pre>$("table").each(function(){
+	$("td", this).live("hover", function(){
+		$(this).toggleClass("hover");
+	});
+});</pre>
+                <p>See also the <a href="/undelegate">.undelegate()</a> method for a way of removing event handlers added in <a href="/delegate">.delegate()</a>.</p>
+            ]]></longdesc>
+            <example>
+                <desc><![CDATA[Click a paragraph to add another. Note that .delegate() binds the click event to all paragraphs - even new ones.]]></desc>
+                <code><![CDATA[
+    $("body").delegate("p", "click", function(){
+      $(this).after("<p>Another paragraph!</p>");
+    });
+]]></code>
+                <css><![CDATA[
+  p { background:yellow; font-weight:bold; cursor:pointer; 
+      padding:5px; }
+  p.over { background: #ccc; }
+  span { color:red; }
+  ]]></css>
+                <html><![CDATA[<p>Click me!</p>
+
+  <span></span>]]></html>
+            </example>
+            <example>
+                <desc><![CDATA[To display each paragraph's text in an alert box whenever it is clicked:]]></desc>
+                <code><![CDATA[$("body").delegate("p", "click", function(){
+  alert( $(this).text() );
+});]]></code>
+            </example>
+            <example>
+                <desc><![CDATA[To cancel a default action and prevent it from bubbling up, return false:]]></desc>
+                <code><![CDATA[$("body").delegate("a", "click", function() { return false; })]]></code>
+            </example>
+            <example>
+                <desc><![CDATA[To cancel only the default action by using the preventDefault method.]]></desc>
+                <code><![CDATA[$("body").delegate("a", "click", function(event){
+  event.preventDefault();
+});]]></code>
+            </example>
+            <example>
+                <desc><![CDATA[Can bind custom events too.]]></desc>
+                <code><![CDATA[
+
+    $("body").delegate("p", "myCustomEvent", function(e, myName, myValue){
+      $(this).text("Hi there!");
+      $("span").stop().css("opacity", 1)
+               .text("myName = " + myName)
+               .fadeIn(30).fadeOut(1000);
+    });
+    $("button").click(function () {
+      $("p").trigger("myCustomEvent");
+    });
+
+]]></code>
+                <css><![CDATA[
+  p { color:red; }
+  span { color:blue; }
+  ]]></css>
+                <html><![CDATA[<p>Has an attached custom event.</p>
+  <button>Trigger custom event</button>
+  <span style="display:none;"></span>]]></html>
+            </example>
+            <category name="Event Handler Attachment"/>
+            <category name="Version 1.4.2"/>
+        </entry>
         <entry type="method" name="jQuery.error" return="">
             <signature>
                 <added>1.4.1</added>
@@ -1199,6 +1376,9 @@ $("span:eq(3)").text("" + jQuery.data(div, "test2"));]]></code>
             </signature>
             <signature>
                 <added>1.4</added>
+                <argument name="element" type="Element">
+                    <desc><![CDATA[The DOM element to query for the data.]]></desc>
+                </argument>
             </signature>
             <desc><![CDATA[Returns value at named data store for the element, as set by <code>jQuery.data(element, name, value)</code>, or the full data store for the element.]]></desc>
             <longdesc><![CDATA[
@@ -1207,7 +1387,7 @@ $("span:eq(3)").text("" + jQuery.data(div, "test2"));]]></code>
                 <pre>alert(jQuery.data( document.body, 'foo' );
 alert(jQuery.data( document.body ));</pre>
                 <p>The above lines alert the data values that were set on the <code>body</code> element. If nothing was set on that element, an empty string is returned.</p>
-                <p>Calling <code>jQuery.data()</code> with no parameters retrieves all of the values as a JavaScript object.</p>
+                <p>Calling <code>jQuery.data(element)</code> retrieves all of the element's associated values as a JavaScript object. Note that jQuery itself uses this method to store data for internal use, such as event handlers, so do not assume that it contains only data that your own code has stored.</p>
             ]]></longdesc>
             <example>
                 <desc><![CDATA[Get the data named "blah" stored at for an element.]]></desc>
@@ -2743,7 +2923,7 @@ jQuery("div > p").hide();]]></results>
             </signature>
             <desc><![CDATA[Selects all elements of type text.]]></desc>
             <longdesc><![CDATA[
-                <p><code>$(':text')</code> is equivalent to <code>$('[type=text]')</code>. As with other pseudo-class selectors (those that begin with a ":") it is recommended to precede it with a tag name or some other selector; otherwise, the universal selector ("*") is implied. In other words, the bare <code>$(':text')</code> is equivalent to <code>$('*:text')</code>, so <code>$('input:text')</code> should be used instead. </p>
+                <p><code>$(':text')</code> is equivalent to <code>$('[type=text]')</code> and thus selects all <code>&lt;input type="text"&gt;</code> elements. As with other pseudo-class selectors (those that begin with a ":") it is recommended to precede it with a tag name or some other selector; otherwise, the universal selector ("*") is implied. In other words, the bare <code>$(':text')</code> is equivalent to <code>$('*:text')</code>, so <code>$('input:text')</code> should be used instead. </p>
             ]]></longdesc>
             <example>
                 <desc><![CDATA[Finds all text inputs.]]></desc>
@@ -2772,7 +2952,7 @@ jQuery("div > p").hide();]]></results>
 
     <input type="submit" />
     <input type="text" />
-    <select><option>Option<option/></select>
+    <select><option>Option</option></select>
 
     <textarea></textarea>
     <button>Button</button>
@@ -6196,7 +6376,7 @@ if (jQuery.browser.msie) {
             <signature>
                 <added>1.3</added>
                 <argument name="eventType" type="String">
-                    <desc><![CDATA[A string containing a JavaScript event type, such as "click" or "keydown"]]></desc>
+                    <desc><![CDATA[A string containing a JavaScript event type, such as "click" or "keydown." As of jQuery 1.4 the string can contain multiple, space-separated event types or custom event names, as well.]]></desc>
                 </argument>
                 <argument name="handler" type="Function">
                     <desc><![CDATA[A function to execute at the time the event is triggered.]]></desc>
@@ -6205,7 +6385,7 @@ if (jQuery.browser.msie) {
             <signature>
                 <added>1.4</added>
                 <argument name="eventType" type="String">
-                    <desc><![CDATA[A string containing a JavaScript event type, such as "click" or "keydown"]]></desc>
+                    <desc><![CDATA[A string containing a JavaScript event type, such as "click" or "keydown." As of jQuery 1.4 the string can contain multiple, space-separated event types or custom event names, as well.]]></desc>
                 </argument>
                 <argument name="eventData" type="Object">
                     <desc><![CDATA[A map of data that will be passed to the event handler.]]></desc>
@@ -6227,7 +6407,7 @@ if (jQuery.browser.msie) {
   // Bound handler called.
 });
 </pre>
-                <p>When the element is clicked, then the message gets printed. However, suppose that after this, another element is added:
+                <p>When the element is clicked, the handler is called. However, suppose that after this, another element is added:
   </p>
                 <pre>$('body').append('&lt;div class="clickme"&gt;Another target&lt;/div&gt;');</pre>
                 <p>This new element also matches the selector <code>.clickme</code>, but since it was added after the call to <code>.bind()</code>, clicks on it will do nothing.</p>
@@ -6243,23 +6423,46 @@ if (jQuery.browser.msie) {
                 <ol>
                     <li>A click event is generated and passed to the <code>&lt;div&gt;</code> for handling.</li>
                     <li>No handler is directly bound to the <code>&lt;div&gt;</code>, so the event bubbles up the DOM tree.</li>
-                    <li>The event bubbles up until it reaches the root of the tree, which is where <code>.live()</code> binds its special handlers by default.</li>
+                    <li>The event bubbles up until it reaches the root of the tree, which is where <code>.live()</code> binds its special handlers by default. <br/><em>* As of jQuery 1.4, event bubbling can optionally stop at a DOM element "context".</em></li>
                     <li>The special <code>click</code> handler bound by <code>.live()</code> executes.</li>
                     <li>This handler tests the <code>target</code> of the event object to see whether it should continue. This test is performed by checking if <code>$(event.target).closest('.clickme')</code> is able to locate a matching element.</li>
                     <li>If a matching element is found, the original handler is called on it.</li>
                 </ol>
                 <p>Because the test in step 5 is not performed until the event occurs, elements can be added at any time and still respond to events.</p>
+                <p>See the discussion for <code><a href="/bind">.bind()</a></code> for more information on event binding.</p>
+                <h4 id="multiple-events">Multiple Events</h4>
+                <p>As of jQuery 1.4.1 <code>.live()</code> can accept multiple, space-separated events, similar to the functionality provided in <a href="/bind">.bind()</a>. For example, we can "live bind" the <code>mouseover</code> and <code>mouseout</code> events at the same time like so: </p>
+                <pre>$('.hoverme').live('mouseover mouseout', function(event) {
+  if (event.type == 'mouseover') {
+    // do something on mouseover
+  } else {
+    // do something on mouseout
+  }
+});</pre>
+                <h4 id="event-data">Event Data</h4>
+                <p>As of jQuery 1.4, the optional <code>eventData</code> parameter allows us to pass additional information to the handler. One handy use of this parameter is to work around issues caused by closures. See the <code>.bind()</code> method's "<a href="/bind/#passing-event-data">Passing Event Data</a>" discussion for more information.</p>
+                <h4 id="event-context">Event Context</h4>
+                <p>As of jQuery 1.4, live events can be bound to a DOM element "context" rather than to the default document root. To set this context, we use the <a href="http://api.jquery.com/jquery/#selector-context"><code>jQuery()</code> function's second argument</a>, passing in a single DOM element (as opposed to a jQuery collection or a selector).</p>
+                <pre>$('div.clickme', $('#container')[0]).live('click', function() {
+  // Live handler called.
+});</pre>
+                <p>The live handler in this example is called only when <code>&lt;div class="clickme"&gt;</code> is a descendant of an element with an ID of "container."</p>
                 <h4 id="caveats">Caveats</h4>
                 <p>The <code>.live()</code> technique is useful, but due to its special approach cannot be simply substituted for <code>.bind()</code> in all cases. Specific differences include:</p>
-                <li>As of jQuery 1.4, the <code>.live()</code> method supports custom events as well as all JavaScript events. As of jQuery 1.4.1 even focus and blur work with live (mapping to the more appropriate, bubbling, events focusin and focusout). Additionally, as of jQuery 1.4.1 the hover event can be specified (mapping to "mouseenter mouseleave"). In version 1.3.x, however, only the following JavaScript events (in addition to custom events) could be bound with <code>.live()</code>: <code>click</code>, <code>dblclick</code>, <code>keydown</code>, <code>keypress</code>, <code>keyup</code>, <code>mousedown</code>, <code>mousemove</code>, <code>mouseout</code>, <code>mouseover</code>, and <code>mouseup</code>.</li>
-                <li>DOM traversal methods are not fully supported for finding elements to send to <code>.live()</code>. Rather, the <code>.live()</code> method should always be called directly after a selector, as in the example above.</li>
-                <li>To stop further handlers from executing after one bound using <code>.live()</code>, the handler must return <code>false</code>. Calling <code>.stopPropagation()</code> will not accomplish this.</li>
-                <p>See the discussion for <code><a href="/bind">.bind()</a></code> for more information on event binding.</p>
-                <p>As of jQuery 1.4.1 you can also pass in multiple events to live, similarly to the functionality provided in <a href="/bind">.bind()</a>.</p>
-                <p>As of jQuery 1.4, the optional <code>eventData</code> parameter allows us to pass additional information to the handler. One handy use of this parameter is to work around issues caused by closures. See the <code>.bind()</code> method's "<a href="/bind/#passing-event-data">Passing Event Data</a>" discussion for more information.  </p>
+                <ul>
+                    <li>DOM traversal methods are not fully supported for finding elements to send to <code>.live()</code>. Rather, the <code>.live()</code> method should always be called directly after a selector, as in the example above.</li>
+                    <li>To stop further handlers from executing after one bound using <code>.live()</code>, the handler must return <code>false</code>. Calling <code>.stopPropagation()</code> will not accomplish this.</li>
+                    <li>In <b>jQuery 1.3.x</b> only the following JavaScript events (in addition to custom events) could be bound with <code>.live()</code>: <code>click</code>, <code>dblclick</code>, <code>keydown</code>, <code>keypress</code>, <code>keyup</code>, <code>mousedown</code>, <code>mousemove</code>, <code>mouseout</code>, <code>mouseover</code>, and <code>mouseup</code>.</li>
+                </ul>
+                <blockquote>
+                    <ul>
+                        <li>As of <b>jQuery 1.4</b> the <code>.live()</code> method supports custom events as well as all JavaScript events. As of <b>jQuery 1.4.1</b> even <code>focus</code> and <code>blur</code> work with live (mapping to the more appropriate, bubbling, events <code>focusin</code> and <code>focusout</code>).</li>
+                        <li>As of <b>jQuery 1.4.1</b> the <code>hover</code> event can be specified (mapping to "<code>mouseenter mouseleave</code>").</li>
+                    </ul>
+                </blockquote>
             ]]></longdesc>
             <example>
-                <desc><![CDATA[Click a paragraph to add another. Note that live binds the click event to all paragraphs - even new ones.]]></desc>
+                <desc><![CDATA[Click a paragraph to add another. Note that .live() binds the click event to all paragraphs - even new ones.]]></desc>
                 <code><![CDATA[
     $("p").live("click", function(){
       $(this).after("<p>Another paragraph!</p>");
@@ -7248,24 +7451,23 @@ alert(event.data.foo);
 $("p").bind("click", {foo: "bar"}, handler)]]></code>
             </example>
             <example>
-                <desc><![CDATA[To cancel a default action and prevent it from bubbling up, return false:]]></desc>
+                <desc><![CDATA[Cancel a default action and prevent it from bubbling up by returning <code>false</code>:]]></desc>
                 <code><![CDATA[$("form").bind("submit", function() { return false; })]]></code>
             </example>
             <example>
-                <desc><![CDATA[To cancel only the default action by using the preventDefault method.]]></desc>
+                <desc><![CDATA[Cancel only the default action by using the .preventDefault() method.]]></desc>
                 <code><![CDATA[$("form").bind("submit", function(event) {
 event.preventDefault();
 });]]></code>
             </example>
             <example>
-                <desc><![CDATA[Stop only an event from bubbling by using the stopPropagation method.]]></desc>
+                <desc><![CDATA[Stop an event from bubbling without preventing the default action by using the .stopPropagation() method.]]></desc>
                 <code><![CDATA[$("form").bind("submit", function(event) {
-if( event.stopPropagation ) { event.stopPropagation(); } //For 'Good' browsers
-else { event.cancelBubble = true; } //For IE
+  event.stopPropagation();
 });]]></code>
             </example>
             <example>
-                <desc><![CDATA[Can bind custom events too.]]></desc>
+                <desc><![CDATA[Bind custom events.]]></desc>
                 <code><![CDATA[
 
 $("p").bind("myCustomEvent", function(e, myName, myValue){
@@ -8971,7 +9173,7 @@ div { background:blue; }
                 <desc><![CDATA[Gets the test.php page contents which has been returned in json format (<?php echo json_encode(array("name"=>"John","time"=>"2pm")); ?>)
 
 ]]></desc>
-                <code><![CDATA[$.post("test.php", { func: "getNameAndTime" },
+                <code><![CDATA[$.post("test.php", { "func": "getNameAndTime" },
    function(data){
      alert(data.name); // John
      console.log(data.time); //  2pm
@@ -9675,7 +9877,7 @@ function dates(datos) {
                 <pre>$.ajax({
   url: <em>url</em>,
   data: <em>data</em>,
-  success: <em>success</em>
+  success: <em>success</em>,
   dataType: <em>dataType</em>
 });
 </pre>
@@ -9750,10 +9952,37 @@ function dates(datos) {
                 <p>When this method executes, it retrieves the content of <code>ajax/test.html</code>, but then jQuery parses the returned document to find the element with an ID of <code>container</code>. This element, along with its contents, is inserted into the element with an ID of <code>result</code>, and the rest of the retrieved document is discarded.</p>
             ]]></longdesc>
             <example>
-                <desc><![CDATA[Load a piece of the documentation sidebar navigation into a custom unordered list.]]></desc>
-                <code><![CDATA[$("#header").load("/ h1");]]></code>
-                <css><![CDATA[body{ font-size: 11px; font-family: Arial; }]]></css>
-                <html><![CDATA[<b>Main Page Header:</b> <span id="header"></span>]]></html>
+                <desc><![CDATA[Load the main page's footer navigation into an ordered list.]]></desc>
+                <code><![CDATA[
+  $("#new-nav").load("/ #jq-footerNavigation li");
+]]></code>
+                <css><![CDATA[
+ body{ font-size: 12px; font-family: Arial; }
+ ]]></css>
+                <html><![CDATA[
+<b>Footer navigation:</b>
+<ol id="new-nav"></ol>
+]]></html>
+            </example>
+            <example>
+                <desc><![CDATA[Display a notice if the Ajax request encounters an error.]]></desc>
+                <code><![CDATA[
+$("#success").load("/not-here.php", function(response, status, xhr) {
+  if (status == "error") {
+    var msg = "Sorry but there was an error: ";
+    $("#error").html(msg + xhr.status + " " + xhr.statusText);
+  }
+});
+  ]]></code>
+                <css><![CDATA[
+  body{ font-size: 12px; font-family: Arial; }
+  ]]></css>
+                <html><![CDATA[
+<b>Successful Response (should be blank):</b>
+<div id="success"></div>
+<b>Error Response:</b>
+<div id="error"></div>
+  ]]></html>
             </example>
             <example>
                 <desc><![CDATA[Load the feeds.html file into the div with the ID of feeds.]]></desc>
@@ -9767,8 +9996,8 @@ function dates(datos) {
             <example>
                 <desc><![CDATA[Same as above, but will POST the additional parameters to the server and a callback that is executed when the server is finished responding.]]></desc>
                 <code><![CDATA[$("#feeds").load("feeds.php", {limit: 25}, function(){
-   alert("The last 25 entries in the feed have been loaded");
- });]]></code>
+alert("The last 25 entries in the feed have been loaded");
+});]]></code>
             </example>
             <category name="Shorthand Methods"/>
             <category name="Version 1.0"/>
@@ -9789,7 +10018,7 @@ function dates(datos) {
                     <desc><![CDATA[If set to false it will force the pages that you request to not be cached by the browser.]]></desc>
                 </option>
                 <option name="complete(XMLHttpRequest, textStatus)" type="Function">
-                    <desc><![CDATA[A function to be called when the request finishes (after success and error callbacks are executed). The function gets passed two arguments: The XMLHttpRequest object and a string describing the type of success of the request. This is an <a href="http://docs.jquery.com/Ajax_Events">Ajax Event</a>.]]></desc>
+                    <desc><![CDATA[A function to be called when the request finishes (after success and error callbacks are executed). The function gets passed two arguments: The XMLHttpRequest object and a string describing the status of the request. This is an <a href="http://docs.jquery.com/Ajax_Events">Ajax Event</a>.]]></desc>
                 </option>
                 <option default="'application/x-www-form-urlencoded'" name="contentType" type="String">
                     <desc><![CDATA[When sending data to the server, use this content-type. Default is "application/x-www-form-urlencoded", which is fine for most cases. If you explicitly pass in a content-type to $.ajax() then it'll always be sent to the server (even if no data is sent).]]></desc>
@@ -9834,7 +10063,7 @@ function dates(datos) {
                     <desc><![CDATA[Only for requests with "jsonp" or "script" dataType and "GET" type. Forces the request to be interpreted as a certain charset. Only needed for charset differences between the remote and local content.]]></desc>
                 </option>
                 <option name="success(data, textStatus, XMLHttpRequest)" type="Function">
-                    <desc><![CDATA[A function to be called if the request succeeds. The function gets passed three arguments: The data returned from the server, formatted according to the 'dataType' parameter; a string describing the status; and the XMLHttpRequest object. This is an <a href="http://docs.jquery.com/Ajax_Events">Ajax Event</a>.]]></desc>
+                    <desc><![CDATA[A function to be called if the request succeeds. The function gets passed three arguments: The data returned from the server, formatted according to the 'dataType' parameter; a string describing the status; and the XMLHttpRequest object (available as of jQuery 1.4). This is an <a href="http://docs.jquery.com/Ajax_Events">Ajax Event</a>.]]></desc>
                 </option>
                 <option name="timeout" type="Number">
                     <desc><![CDATA[Set a local timeout (in milliseconds) for the request. This will override the global timeout, if one is set via <a href="/jQuery.ajaxSetup">$.ajaxSetup</a>. For example, you could use this property to give a single request a longer timeout than all other requests that you've set to time out in one second. See <a href="/jQuery.ajaxSetup">$.ajaxSetup</a>() for global timeouts.]]></desc>
@@ -10302,7 +10531,7 @@ The value of this property is typically equal to document, as this is the defaul
                 </argument>
             </signature>
             <signature>
-                <added>1.0</added>
+                <added>1.4</added>
                 <argument name="function(index)" type="Function">
                     <desc><![CDATA[A function used as a test for each element in the set. <code>this</code> is the current DOM element.]]></desc>
                 </argument>
@@ -10379,6 +10608,7 @@ $('li').not(document.getElementById('notli'))
             </example>
             <category name="Filtering"/>
             <category name="Version 1.0"/>
+            <category name="Version 1.4"/>
         </entry>
         <entry type="method" name="outerWidth" return="Integer">
             <signature>
@@ -10893,7 +11123,7 @@ $('#clickme').click(function() {
     });
 ]]></code>
                 <css><![CDATA[
-  div { background:#ece0fb; width:30px; 
+  div { background:#ece023; width:30px; 
         height:40px; margin:2px; float:left; }
   ]]></css>
                 <html><![CDATA[<div></div>]]></html>
@@ -11781,7 +12011,7 @@ empty == { validate: true, limit: 5, name: "bar" }]]></results>
             <desc><![CDATA[A generic iterator function, which can be used to seamlessly iterate over both objects and arrays. Arrays and array-like objects with a length property (such as a function's arguments object) are iterated by numeric index, from 0 to length-1. Other objects are iterated via their named properties.
   ]]></desc>
             <longdesc><![CDATA[
-                <p>The <code>$.each()</code> function is not the same as <a href="Core/each">.each()</a>, which is used to iterate, exclusively, over a jQuery object. The <code>$.each()</code> function can be used to iterate over any collection, whether it is a map (JavaScript object) or an array. In the case of an array, the callback is passed an array index and a corresponding array value each time.</p>
+                <p>The <code>$.each()</code> function is not the same as <a href="/each/">.each()</a>, which is used to iterate, exclusively, over a jQuery object. The <code>$.each()</code> function can be used to iterate over any collection, whether it is a map (JavaScript object) or an array. In the case of an array, the callback is passed an array index and a corresponding array value each time.</p>
                 <pre>$.each([52, 97], function(index, value) { 
   alert(index + ': ' + value); 
 });
@@ -13004,9 +13234,9 @@ $("button").toggle(function(){
   &lt;div class="inner"&gt;Goodbye&lt;/div&gt;
 &lt;/div&gt;</pre>
                 <p>If there is more than one target element, however, cloned copies of the inserted element will be created for each target after the first.</p>
-                <p>In jQuery 1.4 before and after will also work on disconnected DOM nodes. For example if you were to do:</p>
-                <pre>$("<div/>").before("<p/>");</pre>
-                <p>Then you would end up with a jQuery set that contains a paragraph and a div (in that order).</p>
+                <p>In jQuery 1.4, <code>.before()</code> and <code>.after()</code> will also work on disconnected DOM nodes:</p>
+                <pre>$("&lt;div/&gt;").before("&lt;p&gt;&lt;/p&gt;");</pre>
+                <p>The result is a jQuery set that contains a paragraph and a div (in that order).</p>
             ]]></longdesc>
             <example>
                 <desc><![CDATA[Inserts some HTML before all paragraphs.]]></desc>
@@ -13773,7 +14003,7 @@ $('input:radio[name=bar]:checked').val(); // get the value from a set of radio b
                     <desc><![CDATA[A function object that will be invoked for each element in the current set.]]></desc>
                 </argument>
             </signature>
-            <desc><![CDATA[Pass each element in the current matched set through a function, producing a new jQuery object containing the return values..]]></desc>
+            <desc><![CDATA[Pass each element in the current matched set through a function, producing a new jQuery object containing the return values.]]></desc>
             <longdesc><![CDATA[
                 <p>The <code>.map()</code> method is particularly useful for getting or setting the value of a collection of elements. Consider a form with a set of checkboxes in it:</p>
                 <pre>
@@ -13803,6 +14033,7 @@ $('input:radio[name=bar]:checked').val(); // get the value from a set of radio b
   return this.id;
 }).get().join(',');</pre>
                 <p>The result of this call is the string, <code>"two,four,six,eight"</code>.</p>
+                <p>Within the callback function, <code>this</code> refers to the current DOM element for each iteration.</p>
             ]]></longdesc>
             <example>
                 <desc><![CDATA[Build a list of all the values within a form.]]></desc>
@@ -14071,7 +14302,7 @@ input { clear:left}
   $('li').filter(':even').css('background-color', 'red');
 </pre>
 <p>The result of this call is a red background for items 1, 3, and 5, as they match the selector (recall that <code>:even</code> and <code>:odd</code> use 0-based indexing).</p>
-<h4>Using a Filter Function</h4>
+<h4 id="using-filter-function">Using a Filter Function</h4>
 <p>The second form of this method allows us to filter elements against a function rather than a selector. For each element, if the function returns <code>true</code>, the element will be included in the filtered set; otherwise, it will be excluded. Suppose we have a somewhat more involved HTML snippet:</p>
 <pre>
 &lt;ul&gt;
@@ -14185,7 +14416,7 @@ $('li').filter(function(index) {
                     <desc><![CDATA[A boolean value to determine whether the class should be added or removed.]]></desc>
                 </argument>
             </signature>
-            <desc><![CDATA[Add or remove a class from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.]]></desc>
+            <desc><![CDATA[Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.]]></desc>
             <longdesc><![CDATA[
                 <p>This method takes one or more class names as its parameter. In the first version, if an element in the matched set of elements already has the class, then it is removed; if an element does not have the class, then it is added. For example, we can apply <code>.toggleClass()</code> to a simple <code>&lt;div&gt;</code>: </p>
                 <pre>&lt;div class="tumble"&gt;Some text.&lt;/div&gt;
@@ -14620,6 +14851,3 @@ $("button").click(function () {
         </entry>
     </entries>
 </api>
-<!-- Dynamic page generated in 0.394 seconds. -->
-<!-- Cached page generated by WP-Super-Cache on 2010-02-08 13:32:11 -->
-<!-- super cache -->
